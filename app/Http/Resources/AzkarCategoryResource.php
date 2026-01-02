@@ -18,7 +18,7 @@ class AzkarCategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'order' => $this->order,
-            'numberOfAzkar' => $this->azkars()->count(),
+            'numberOfAzkar' => $this->azkars_count,
             'azkar' => AzkarResource::collection($this->whenLoaded('azkars')),
         ];
     }

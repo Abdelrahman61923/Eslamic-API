@@ -14,7 +14,9 @@ class DuaCategoriesController extends Controller
      */
     public function index()
     {
-        $duaCategory = DuaCategory::orderBy('order')->get();
+        $duaCategory = DuaCategory::withCount('duas')
+            ->orderBy('order')
+            ->get();
         return response()->json([
             'duaCategory' => DuaCategoryResource::collection($duaCategory),
         ], 200);
@@ -43,32 +45,25 @@ class DuaCategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(DuaCategory $duaCategory)
     {
-        try {
-            $duaCategory = DuaCategory::with('duas')->findOrFail($id);
-            return response()->json([
-                'duaCategory' => new DuaCategoryResource($duaCategory),
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Dua category not found',
-            ], 404);
-        }
+        $duaCategory->load(['duas.duaCategory'])
+            ->loadCount('duas');
+        return response()->json([
+            'duaCategory' => new DuaCategoryResource($duaCategory),
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, DuaCategory $duaCategory)
     {
         $request->validate([
-            'name' => ['sometimes', "unique:dua_categories,name,$id"],
-            'order' => ['sometimes', 'integer', 'min:0', "unique:dua_categories,order,$id"]
+            'name' => ['sometimes', "unique:dua_categories,name,$duaCategory->id"],
+            'order' => ['sometimes', 'integer', 'min:0', "unique:dua_categories,order,$duaCategory->id"]
         ]);
 
-        $duaCategory = DuaCategory::findOrFail($id);
         $duaCategory->update($request->all());
 
         return response()->json([
@@ -80,9 +75,9 @@ class DuaCategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(DuaCategory $duaCategory)
     {
-        DuaCategory::destroy($id);
+        $duaCategory->delete();
         return response()->json([
             'message' => 'Dua Category Delete Successfully',
         ], 200);

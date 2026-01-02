@@ -38,19 +38,11 @@ class RadiosController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Radio $radio)
     {
-        try {
-            $radio = Radio::findOrFail($id);
-            return response()->json([
-                'radio' => $radio,
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Radio not found',
-            ], 404);
-        }
+        return response()->json([
+            'radio' => $radio,
+        ], 200);
     }
 
     /**

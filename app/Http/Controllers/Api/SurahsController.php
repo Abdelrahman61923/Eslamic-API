@@ -14,7 +14,7 @@ class SurahsController extends Controller
      */
     public function index()
     {
-        $surahs = Surah::all();
+        $surahs = Surah::withCount('ayahs')->get();
         return response()->json([
             'surahs' => SurahResource::collection($surahs),
         ], 200);
@@ -34,14 +34,16 @@ class SurahsController extends Controller
     public function show(string $id)
     {
         try {
-            $surah = Surah::with('ayahs')->findOrFail($id);
+            $surah = Surah::with('ayahs')
+                ->withCount('ayahs')
+                ->findOrFail($id);
             return response()->json([
                 'surah' => new SurahResource($surah),
             ], 200);
 
         } catch (\Throwable $th) {
             return response()->json([
-                'message' => 'Dua category not found',
+                'message' => 'Surah category not found',
             ], 404);
         }
     }

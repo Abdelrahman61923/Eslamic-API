@@ -21,7 +21,7 @@ class SurahResource extends JsonResource
             'name' => $this->name,
             'url' => $this->url,
             'revelation_type' => $this->revelation_type == 'Meccan' ? 'مكيه' : 'مدنيه',
-            'numberOfAyahs' => $this->ayahs()->count(),
+            'numberOfAyahs' => $this->ayahs_count,
             'ayahs' => AyahResource::collection($this->whenLoaded('ayahs'))
         ];
     }

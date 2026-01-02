@@ -15,7 +15,7 @@ class AzkarController extends Controller
      */
     public function index()
     {
-        $azkar = Azkar::all();
+        $azkar = Azkar::with('azkarCategory')->get();
         return response()->json([
             'Azkar' => AzkarResource::collection($azkar),
         ], 200);
@@ -46,28 +46,19 @@ class AzkarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Azkar $azkar)
     {
-        try {
-            $zekr = Azkar::findOrFail($id);
-            return response()->json([
-                'zekr' => new AzkarResource($zekr),
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Zekr not found',
-            ], 404);
-        }
+        $azkar->load('azkarCategory');
+        return response()->json([
+            'zekr' => new AzkarResource($azkar),
+        ], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Azkar $azkar)
     {
-        $zekr = Azkar::findOrFail($id);
-
         $request->validate([
             'azkar_category_id' => ['sometimes', 'integer', 'exists:azkar_categories,id'],
             'zekr' => ['sometimes', 'string', 'min:3'],
@@ -75,15 +66,15 @@ class AzkarController extends Controller
             'reference' => ['sometimes', 'nullable', 'string', 'max:255'],
             'order' => ['sometimes', 'integer', 'min:0',
             Rule::unique('azkars')
-                ->where('azkar_category_id', $request->azkar_category_id ?? $zekr->azkar_category_id)
-                ->ignore($zekr->id),],
+                ->where('azkar_category_id', $request->azkar_category_id ?? $azkar->azkar_category_id)
+                ->ignore($azkar->id),],
             'count' => ['sometimes', 'integer', 'min:1'],
         ]);
 
-        $zekr->update($request->all());
+        $azkar->update($request->all());
         return response()->json([
             'message' => 'Zekr Update Successfully',
-            'zekr' => new AzkarResource($zekr),
+            'zekr' => new AzkarResource($azkar),
         ], 200);
     }
 

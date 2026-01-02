@@ -14,7 +14,9 @@ class AzkarCategoriesController extends Controller
      */
     public function index()
     {
-        $azkarCategory = AzkarCategory::orderBy('order')->get();
+        $azkarCategory = AzkarCategory::withCount('azkars')
+            ->orderBy('order')
+            ->get();
         return response()->json([
             'azkarCategory' => AzkarCategoryResource::collection($azkarCategory),
         ], 200);
@@ -44,19 +46,13 @@ class AzkarCategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(AzkarCategory $azkarCategory)
     {
-        try {
-            $azkarCategory = AzkarCategory::with('azkars')->findOrFail($id);
-            return response()->json([
-                'azkarCategory' => new AzkarCategoryResource($azkarCategory),
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Azkar Category not found',
-            ], 404);
-        }
+        $azkarCategory->load(['azkars.azkarCategory'])
+            ->loadCount('azkars');
+        return response()->json([
+            'azkarCategory' => new AzkarCategoryResource($azkarCategory),
+        ], 200);
     }
 
     /**

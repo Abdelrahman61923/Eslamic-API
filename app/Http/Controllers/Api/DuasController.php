@@ -15,7 +15,7 @@ class DuasController extends Controller
      */
     public function index()
     {
-        $duas = Dua::all();
+        $duas = Dua::with('duaCategory')->get();
         return response()->json([
             'Duas' => DuaResource::collection($duas),
         ], 200);
@@ -45,19 +45,12 @@ class DuasController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Dua $dua)
     {
-        try {
-            $dua = Dua::findOrFail($id);
-            return response()->json([
-                'dua' => new DuaResource($dua),
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Dua not found',
-            ], 404);
-        }
+        $dua->load('duaCategory');
+        return response()->json([
+            'dua' => new DuaResource($dua),
+        ], 200);
     }
 
     /**
@@ -88,9 +81,9 @@ class DuasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Dua $dua)
     {
-        Dua::destroy($id);
+        $dua->delete();
         return response()->json([
             'message' => 'Dua Deleted Successfully',
         ], 200);
