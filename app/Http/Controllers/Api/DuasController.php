@@ -56,10 +56,8 @@ class DuasController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Dua $dua)
     {
-        $dua = Dua::findOrFail($id);
-
         $request->validate([
             'dua_category_id' => ['sometimes', 'integer', 'exists:dua_categories,id'],
             'dua' => ['sometimes', 'string', 'min:3'],

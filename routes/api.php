@@ -39,12 +39,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::apiResource('/dua-category', DuaCategoriesController::class);
-Route::apiResource('/duas', DuasController::class);
-
-Route::apiResource('/azkar-category', AzkarCategoriesController::class);
-Route::apiResource('/azkar', AzkarController::class);
-
-Route::apiResource('/radios', RadiosController::class);
-
-Route::apiResource('/surahs', SurahsController::class);
+// api resources
+Route::apiResources([
+    'dua-category' => DuaCategoriesController::class,
+    'duas' => DuasController::class,
+    'azkar-category' => AzkarCategoriesController::class,
+    'azkar' => AzkarController::class,
+    'radios' => RadiosController::class,
+    'surahs' => SurahsController::class,
+]);
