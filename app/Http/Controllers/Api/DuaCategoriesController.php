@@ -15,8 +15,7 @@ class DuaCategoriesController extends Controller
     public function index()
     {
         $duaCategory = DuaCategory::withCount('duas')
-            ->orderBy('order')
-            ->get();
+            ->orderBy('order')->get();
         return response()->json([
             'duaCategory' => DuaCategoryResource::collection($duaCategory),
         ], 200);
@@ -38,7 +37,7 @@ class DuaCategoriesController extends Controller
         ]);
         return response()->json([
             'message' => 'Dua Catogory Created Successfully',
-            'duaCategory' => $duaCategory,
+            'duaCategory' => new DuaCategoryResource($duaCategory),
         ], 200);
     }
 
@@ -47,7 +46,7 @@ class DuaCategoriesController extends Controller
      */
     public function show(DuaCategory $duaCategory)
     {
-        $duaCategory->load(['duas.duaCategory'])
+        $duaCategory->load('duas')
             ->loadCount('duas');
         return response()->json([
             'duaCategory' => new DuaCategoryResource($duaCategory),
@@ -68,7 +67,7 @@ class DuaCategoriesController extends Controller
 
         return response()->json([
             'message' => 'Dua Category Update Successfully',
-            'duaCategory' => $duaCategory,
+            'duaCategory' => new DuaCategoryResource($duaCategory),
         ], 200);
     }
 

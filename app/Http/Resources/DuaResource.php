@@ -17,10 +17,12 @@ class DuaResource extends JsonResource
         return [
             'id' => $this->id,
             'dua' => $this->dua,
-            'dua-category' => [
-                'id' => $this->duaCategory->id,
-                'name' => $this->duaCategory->name,
-            ],
+            'dua_category' => $this->whenLoaded('duaCategory', function() {
+                return [
+                    'id' => $this->duaCategory->id,
+                    'name' => $this->duaCategory->name,
+                ];
+            }),
             'reference' => $this->reference,
             'order' => $this->order,
             'count' => $this->count,

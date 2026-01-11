@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AzkarCategoryResource extends JsonResource
+class RadioResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,8 @@ class AzkarCategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'order' => $this->order,
-            'numberOfAzkar' => $this->whenCounted('azkars'),
-            'azkar' => AzkarResource::collection($this->whenLoaded('azkars')),
+            'name'=> $this->name,
+            'url' => $this->url,
         ];
     }
 }

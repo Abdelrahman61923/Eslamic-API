@@ -15,8 +15,7 @@ class AzkarCategoriesController extends Controller
     public function index()
     {
         $azkarCategory = AzkarCategory::withCount('azkars')
-            ->orderBy('order')
-            ->get();
+            ->orderBy('order')->get();
         return response()->json([
             'azkarCategory' => AzkarCategoryResource::collection($azkarCategory),
         ], 200);
@@ -48,8 +47,7 @@ class AzkarCategoriesController extends Controller
      */
     public function show(AzkarCategory $azkarCategory)
     {
-        $azkarCategory->load(['azkars.azkarCategory'])
-            ->loadCount('azkars');
+        $azkarCategory->load('azkars')->loadCount('azkars');
         return response()->json([
             'azkarCategory' => new AzkarCategoryResource($azkarCategory),
         ], 200);

@@ -31,21 +31,13 @@ class SurahsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Surah $surah)
     {
-        try {
-            $surah = Surah::with('ayahs')
-                ->withCount('ayahs')
-                ->findOrFail($id);
-            return response()->json([
-                'surah' => new SurahResource($surah),
-            ], 200);
-
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Surah category not found',
-            ], 404);
-        }
+        $surah->load('ayahs')
+            ->loadCount('ayahs');
+        return response()->json([
+            'surah' => new SurahResource($surah),
+        ], 200);
     }
 
     /**

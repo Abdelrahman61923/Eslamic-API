@@ -38,7 +38,7 @@ class DuasController extends Controller
         $dua = Dua::create($request->all());
         return response()->json([
             'message' => 'Dua Created Successfully',
-            'Dua' => $dua,
+            'Dua' => new DuaResource($dua),
         ], 200);
     }
 

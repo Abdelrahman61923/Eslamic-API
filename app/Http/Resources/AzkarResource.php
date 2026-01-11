@@ -17,10 +17,12 @@ class AzkarResource extends JsonResource
         return [
             'id' => $this->id,
             'zekr' => $this->zekr,
-            'zekr-category' => [
-                'id' => $this->azkarCategory->id,
-                'name' => $this->azkarCategory->name,
-            ],
+            'zekr_category' => $this->whenLoaded('azkarCategory', function () {
+                return [
+                    'id' => $this->azkarCategory->id,
+                    'name' => $this->azkarCategory->name,
+                ];
+            }),
             'fadl' => $this->description,
             'reference' => $this->reference,
             'order' => $this->order,

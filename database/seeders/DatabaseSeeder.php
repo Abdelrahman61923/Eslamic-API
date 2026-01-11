@@ -12,10 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call(DuaSeeder::class);
-        $this->call(AzkarSeeder::class);
-        $this->call(RadioSeeder::class);
-        $this->call(SurahSeeder::class);
+        $this->call([
+            DuaSeeder::class,
+            AzkarSeeder::class,
+            RadioSeeder::class,
+            SurahSeeder::class,
+        ]);
 
 
         // \App\Models\User::factory(10)->create();

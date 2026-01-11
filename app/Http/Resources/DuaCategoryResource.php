@@ -18,7 +18,7 @@ class DuaCategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'order' => $this->order,
-            'numberOfDuas' => $this->duas_count,
+            'numberOfDuas' => $this->whenCounted('duas'),
             'duas' => DuaResource::collection($this->whenLoaded('duas')),
         ];
     }

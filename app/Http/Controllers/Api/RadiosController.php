@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RadioResource;
 use App\Models\Radio;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class RadiosController extends Controller
     {
         $radios = Radio::all();
         return response()->json([
-            'radios' => $radios,
+            'radios' => RadioResource::collection($radios),
         ], 200);
     }
 
@@ -31,7 +32,7 @@ class RadiosController extends Controller
         $radio = Radio::create($request->all());
         return response()->json([
             'message' => 'Radio Created Successfully',
-            'Radio' => $radio,
+            'Radio' => new RadioResource($radio),
         ], 200);
     }
 
@@ -41,7 +42,7 @@ class RadiosController extends Controller
     public function show(Radio $radio)
     {
         return response()->json([
-            'radio' => $radio,
+            'radio' => new RadioResource($radio),
         ], 200);
     }
 
@@ -58,7 +59,7 @@ class RadiosController extends Controller
         $radio->update($request->all());
         return response()->json([
             'message' => 'Radio Updated Successfully',
-            'Radio' => $radio,
+            'Radio' => new RadioResource($radio),
         ], 200);
     }
 
