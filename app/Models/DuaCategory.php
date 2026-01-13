@@ -10,7 +10,7 @@ class DuaCategory extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'order',
+        'name', 'slug', 'order',
     ];
 
     protected $hidden = [

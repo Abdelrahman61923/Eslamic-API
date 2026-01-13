@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dua_categories', function (Blueprint $table) {
+        Schema::create('tafsirs', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
-            $table->unsignedInteger('order')->unique()->default(0);
+            $table->foreignId('ayah_id')->constrained()->cascadeOnDelete();
+            $table->unsignedInteger('tafsir_id');
+            $table->longText('text');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dua_categories');
+        Schema::dropIfExists('tafsirs');
     }
 };

@@ -24,6 +24,7 @@ class AyahResource extends JsonResource
             'hizb_quarter' => $this->hizb_quarter,
             'sajda' => $this->sajda,
             'audio_128' => $this->audio_128,
+            'tafsir' => TafsirResource::collection($this->whenLoaded('tafsirs')),
         ];
     }
 }

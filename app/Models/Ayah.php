@@ -20,4 +20,9 @@ class Ayah extends Model
     {
         return $this->belongsTo(Surah::class);
     }
+
+    public function tafsirs()
+    {
+        return $this->hasMany(Tafsir::class);
+    }
 }

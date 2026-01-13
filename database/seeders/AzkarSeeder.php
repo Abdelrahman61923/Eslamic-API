@@ -14,15 +14,20 @@ class AzkarSeeder extends Seeder
      */
     public function run(): void
     {
-        $azkarcategories = ['أذكار الصباح', 'أذكار المساء',
-            'أذكار النوم', 'أذكار الاستيقاظ من النوم',
+        $azkarcategories = [
+            'أذكار الصباح' => 'morning',
+            'أذكار المساء' => 'evening',
+            'أذكار النوم' => 'sleep',
         ];
 
         $order = 1;
-        foreach ($azkarcategories as $name) {
+        foreach ($azkarcategories as $name => $slug) {
             AzkarCategory::firstOrCreate(
                 ['name' => $name],
-                ['order' => $order++]
+                [
+                    'order' => $order++,
+                    'slug' => $slug
+                ]
             );
         }
 

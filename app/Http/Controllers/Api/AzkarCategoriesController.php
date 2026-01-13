@@ -14,7 +14,7 @@ class AzkarCategoriesController extends Controller
      */
     public function index()
     {
-        $azkarCategory = AzkarCategory::withCount('azkars')
+        $azkarCategory = AzkarCategory::withCount('azkars')->with('azkars')
             ->orderBy('order')->get();
         return response()->json([
             'azkarCategory' => AzkarCategoryResource::collection($azkarCategory),
@@ -28,11 +28,13 @@ class AzkarCategoriesController extends Controller
     {
         $request->validate([
             'name' => ['required', "unique:azkar_categories,name"],
+            'slug' => ['required', "unique:azkar_categories,slug"],
             'order' => ['nullable', 'integer', 'min:0', "unique:azkar_categories,order"]
         ]);
 
         $azkarCategory = AzkarCategory::create([
             'name' => $request->name,
+            'slug' => $request->slug,
             'order' => $request->order ?? AzkarCategory::max('order') + 1,
         ]);
 
@@ -60,6 +62,7 @@ class AzkarCategoriesController extends Controller
     {
         $request->validate([
             'name' => ['sometimes', "unique:azkar_categories,name,$azkarCategory->id"],
+            'slug' => ['sometimes', "unique:azkar_categories,slug,$azkarCategory->id"],
             'order' => ['sometimes', 'integer', 'min:0', "unique:azkar_categories,order,$azkarCategory->id"]
         ]);
 

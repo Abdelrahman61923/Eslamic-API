@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AyahResource;
 use App\Http\Resources\SurahResource;
 use App\Models\Surah;
 use Illuminate\Http\Request;
@@ -31,13 +32,20 @@ class SurahsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Surah $surah)
+    public function show(Request $request, Surah $surah)
     {
-        $surah->load('ayahs')
-            ->loadCount('ayahs');
-        return response()->json([
-            'surah' => new SurahResource($surah),
-        ], 200);
+        $perPage = $request->get('per_page', 10);
+
+        $surah->loadCount('ayahs');
+
+        $ayahs = $surah->ayahs()
+            ->with('tafsirs')
+            ->paginate($perPage);
+
+        return AyahResource::collection($ayahs)
+            ->additional([
+                'surah' => new SurahResource($surah),
+            ]);
     }
 
     /**

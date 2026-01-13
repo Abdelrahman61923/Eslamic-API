@@ -14,18 +14,33 @@ class DuaSeeder extends Seeder
      */
     public function run(): void
     {
-        $duaCategories = ['دعاء لبس الثوب', 'دعاء لبس الثوب الجديد', 'ما يقول إذا وضع الثوب',
-            'دعاء دخول الخلاء - الحمام', 'دعاء الخروج من الخلاء - الحمام', 'الذكر قبل الوضوء',
-            'الذكر بعد الفراغ من الوضوء', 'الذكر عند الخروج من المنزل', 'الذكر عند دخول المنزل',
-            'دعاء الذهاب إلى المسجد', 'دعاء دخول المسجد', 'دعاء الخروج من المسجد', 'دعاء الاستفتاح',
-            'دعاء الركوع', 'دعاء الرفع من الركوع', 'دعاء السجود',
+        $duaCategories = [
+            'دعاء لبس الثوب' => 'wearing_clothes',
+            'دعاء لبس الثوب الجديد' => 'new_clothes',
+            'ما يقول إذا وضع الثوب' => 'after_putting_clothes',
+            'دعاء دخول الخلاء - الحمام' => 'entering_bathroom',
+            'دعاء الخروج من الخلاء - الحمام' => 'leaving_bathroom',
+            'الذكر قبل الوضوء' => 'before_ablution',
+            'الذكر بعد الفراغ من الوضوء' => 'after_ablution',
+            'الذكر عند الخروج من المنزل' => 'leaving_home',
+            'الذكر عند دخول المنزل' => 'entering_home',
+            'دعاء الذهاب إلى المسجد' => 'going_to_mosque',
+            'دعاء دخول المسجد' => 'entering_mosque',
+            'دعاء الخروج من المسجد' => 'leaving_mosque',
+            'دعاء الاستفتاح' => 'opening_dua',
+            'دعاء الركوع' => 'bowing',
+            'دعاء الرفع من الركوع' => 'rising_from_bow',
+            'دعاء السجود' => 'prostration',
         ];
 
         $order = 1;
-        foreach ($duaCategories as $category) {
+        foreach ($duaCategories as $name => $slug) {
             DuaCategory::firstOrCreate(
-                ['name' => $category],
-                ['order' => $order++],
+                ['name' => $name],
+                [
+                    'order' => $order++,
+                    'slug' => $slug
+                ]
             );
         }
 

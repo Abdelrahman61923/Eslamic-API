@@ -14,7 +14,7 @@ class DuaCategoriesController extends Controller
      */
     public function index()
     {
-        $duaCategory = DuaCategory::withCount('duas')
+        $duaCategory = DuaCategory::withCount('duas')->with('duas')
             ->orderBy('order')->get();
         return response()->json([
             'duaCategory' => DuaCategoryResource::collection($duaCategory),
@@ -28,11 +28,13 @@ class DuaCategoriesController extends Controller
     {
         $request->validate([
             'name' => ['required', "unique:dua_categories,name"],
+            'slug' => ['required', "unique:dua_categories,slug"],
             'order' => ['nullable', 'integer', 'min:0', 'unique:dua_categories,order']
         ]);
 
         $duaCategory = DuaCategory::create([
             'name' => $request->name,
+            'slug' => $request->slug,
             'order' => $request->order ?? DuaCategory::max('order') + 1,
         ]);
         return response()->json([
@@ -60,6 +62,7 @@ class DuaCategoriesController extends Controller
     {
         $request->validate([
             'name' => ['sometimes', "unique:dua_categories,name,$duaCategory->id"],
+            'slug' => ['sometimes', "unique:dua_categories,slug,$duaCategory->id"],
             'order' => ['sometimes', 'integer', 'min:0', "unique:dua_categories,order,$duaCategory->id"]
         ]);
 

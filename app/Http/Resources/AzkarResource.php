@@ -17,7 +17,7 @@ class AzkarResource extends JsonResource
         return [
             'id' => $this->id,
             'zekr' => $this->zekr,
-            'zekr_category' => $this->whenLoaded('azkarCategory', function () {
+            'category' => $this->whenLoaded('azkarCategory', function () {
                 return [
                     'id' => $this->azkarCategory->id,
                     'name' => $this->azkarCategory->name,
